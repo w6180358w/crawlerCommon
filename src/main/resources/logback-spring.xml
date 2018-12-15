@@ -1,0 +1,58 @@
+<!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
+<configuration scan="true" scanPeriod="10 seconds">
+ 
+ <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/application.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- Daily rollover with compression -->
+		<fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+		<!-- keep 30 days worth of history -->
+        <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+        <pattern>%d{yyyy-MM-dd HH:mm:ss ZZZZ} [%-5level] >>> %logger: %m%n%xEx</pattern>
+        <!-- this quadruples logging throughput [8192 ~ 8K] -->
+	    <immediateFlush>false</immediateFlush>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>${LOG_PATH}/application-error.log</file>
+	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		<!-- daily rollover -->
+		<fileNamePattern>${LOG_PATH}/application-error.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+	</rollingPolicy>
+	<filter class="ch.qos.logback.classic.filter.LevelFilter">   
+      <level>ERROR</level>   
+      <onMatch>ACCEPT</onMatch>   
+      <onMismatch>DENY</onMismatch>   
+    </filter>   
+	<encoder>
+	    <pattern>%d{yyyy-MM-dd HH:mm:ss ZZZZ}\(%relative ms\) [%logger]: %m%n</pattern>
+	</encoder>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger - %message%n%xException{1}</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNCFILE" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="FILE" />
+  </appender>
+
+  <appender name="ASYNCSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="STDOUT" />
+  </appender>
+
+  <!-- Off these ones as they are annoying, and anyway we manage configuration ourself -->
+  <logger name="org.hibernate" level="ERROR" />
+
+  <root level="INFO">
+  	<appender-ref ref="FILE-ERROR" />
+    <appender-ref ref="ASYNCFILE" />
+    <appender-ref ref="ASYNCSTDOUT" />
+  </root>
+  
+</configuration>
