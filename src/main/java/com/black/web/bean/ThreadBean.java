@@ -78,10 +78,9 @@ public class ThreadBean extends Thread{
 			this.service.sync(data,s,count);
 		} catch (Exception e) {
 			//结束时间控制为0  为了停止监听线程
-			Logger.error("采集线程["+that.getName()+"]报错,设置监听时间为0");
 			endTime = 0l;
 			success = false;
-			e.printStackTrace();
+			Logger.error("采集线程["+that.getName()+"]报错,设置监听时间为0", e);
 		}
 		
 		//发送邮件（如果采集过程报错则添加内容  不报错带附件）
@@ -114,8 +113,7 @@ public class ThreadBean extends Thread{
 			mail.sendMail();
 			Logger.info("-------------采集线程["+this.getName()+"]发送邮件成功,目标["+that.mail+"]------------");
 		} catch (Exception e) {
-			Logger.error("-------------采集线程["+this.getName()+"]发送邮件失败------------");
-			e.printStackTrace();
+			Logger.error("-------------采集线程["+this.getName()+"]发送邮件失败------------",e);
 		}
 		endTime = 0l;
 		Logger.info("END:采集线程["+this.getName()+"]关闭,任务结束");

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import com.black.web.Logger.Logger;
 import com.black.web.base.utils.CommonUtil;
 import com.black.web.bean.GoodsEntity;
 import com.black.web.services.sync.SyncService;
@@ -38,7 +39,7 @@ public abstract class BaseSyncServiceImpl implements SyncService{
     		//采集
 			doSync(driver,data, key, count);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error("采集失败!",e);
 			throw e;
 		} finally {
 			if(driver!=null) {
