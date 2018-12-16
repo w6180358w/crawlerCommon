@@ -9,12 +9,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.black.web.Logger.Logger;
-import com.black.web.bean.GoodsEntity;
+import com.black.web.bean.BaseEntity;
 
 public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl{
 
 	@Override
-	public void doSync(WebDriver driver, List<GoodsEntity> data,String key,Integer count) throws Exception {
+	public void doSync(WebDriver driver, List<BaseEntity> data,String key,Integer count) throws Exception {
 		//点击登陆页签
 		driver.findElement(By.xpath("//*[@id=\"J_LoginBox\"]/div[1]/div[1]")).click();
 		//用户名
@@ -51,7 +51,7 @@ public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl{
             	
             	WebElement sub = ctx.findElement(By.className("row-3")).findElement(By.className("shop")).findElement(By.tagName("a"));
             	String subjectName = sub.getText();
-            	GoodsEntity entity = new GoodsEntity();
+            	BaseEntity entity = new BaseEntity();
             	entity.setSource("taobao");
             	entity.setPrice(price);
             	entity.setSubjectName(subjectName);
@@ -99,5 +99,4 @@ public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl{
 	public String getType() {
 		return "淘宝";
 	}
-
 }

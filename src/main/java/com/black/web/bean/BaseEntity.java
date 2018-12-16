@@ -1,6 +1,6 @@
 package com.black.web.bean;
 
-public class GoodsEntity {
+public class BaseEntity {
 
 	private String name;			//商品名称
 	private String source;			//来源（淘宝京东等等）

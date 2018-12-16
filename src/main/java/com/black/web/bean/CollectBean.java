@@ -5,7 +5,7 @@ public class CollectBean {
 	private String s;
 	private Integer count;
 	private Integer time;
-	private String mail;
+	private String target;
 	private String type;
 	
 	public String getS() {
@@ -26,11 +26,11 @@ public class CollectBean {
 	public void setTime(Integer time) {
 		this.time = time;
 	}
-	public String getMail() {
-		return mail;
+	public String getTarget() {
+		return target;
 	}
-	public void setMail(String mail) {
-		this.mail = mail;
+	public void setTarget(String target) {
+		this.target = target;
 	}
 	public String getType() {
 		return type;
