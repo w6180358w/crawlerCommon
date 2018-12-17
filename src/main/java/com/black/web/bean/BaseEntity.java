@@ -1,10 +1,14 @@
 package com.black.web.bean;
 
-public class BaseEntity {
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.black.web.base.bean.BaseModel;
+
+@Document(collection="linkedin")
+public class BaseEntity extends BaseModel{
 
 	private String name;			//商品名称
 	private String source;			//来源（淘宝京东等等）
-	private String id;				//商品ID
 	private String detail;			//商品详情
 	private String subjectName;		//厂家名称
 	private String subjectDetail;	//厂家详情
@@ -22,12 +26,6 @@ public class BaseEntity {
 	}
 	public void setSource(String source) {
 		this.source = source;
-	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
 	}
 	public String getDetail() {
 		return detail;

@@ -109,6 +109,16 @@ public class PageResponse<T> extends PagePo {
 		this.datalist = datalist;
 		valCodeMsg(result);
 	}
+	public PageResponse(boolean result, List<T> datalist,PageRequest<? extends BaseModel> vo) {
+		this.result = result;
+		this.datalist = datalist;
+		if(vo!=null && vo.isNotPage){
+			this.isNotPage = true;
+		}else{
+			this.setPage(vo.getPage());
+		}
+		valCodeMsg(result);
+	}
 	public PageResponse(boolean result) {
 		this.result = result;
 		this.isNotPage = null;

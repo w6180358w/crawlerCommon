@@ -14,6 +14,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.black.web.Logger.Logger;
+import com.black.web.base.dao.BaseDao;
+import com.black.web.base.utils.CommonUtil;
 import com.black.web.bean.BaseEntity;
 import com.black.web.bean.LiknedinFollowGroupEntity;
 import com.black.web.bean.LinkedinAchievementEntity;
@@ -647,6 +649,7 @@ public class LinkedinSyncServiceImpl extends BaseSyncServiceImpl{
 	}
 	@Override
 	public void handleData(ThreadBean bean) throws Exception {
+		CommonUtil.getApplicationContext().getBean(BaseDao.class).save(bean.getData().get(0));
 		System.out.println(new Gson().toJson(bean.getData().get(0)));
 	}
 
