@@ -43,7 +43,7 @@ public class Mail {
 	private String psd = "";
 
 	public Mail(String smtpHost, String smtpPort, String username,
-			String psd) {
+			String psd,Boolean ssl) {
 		this.smtpserver = smtpHost;
 		this.name = username;
 		this.smtpport = smtpPort;
@@ -51,6 +51,13 @@ public class Mail {
 		mailProperties.put("mail.smtp.host", smtpHost);
 		mailProperties.put("mail.smtp.port", smtpPort);
 		mailProperties.put("mail.smtp.auth", "true"); // 设置smtp认证，很关键的一句
+		
+		if(ssl) {
+			mailProperties.setProperty("mail.smtp.socketFactory.port", "465");
+			mailProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			mailProperties.setProperty("mail.smtp.socketFactory.fallback", "false");
+		}
+        
 		SendMailAuthenticator auth = new SendMailAuthenticator(username,psd);
 		mailSession = Session.getInstance(mailProperties,auth);
 		mailSession.setDebug(true);
@@ -192,11 +199,10 @@ public class Mail {
 	}
 	
 	public static void main(String[] args) throws Exception{
-		Mail mail = new Mail("smtp.exmail.qq.com", "25", "272416634@qq.com", "ZXY15568085566.");
-		mail.setMailFrom("zhangxy@raysdata.com");
+		Mail mail = new Mail("smtp.exmail.qq.com", "465", "admin@sino-mexico-consultants.com", "BENtobox@35",true);
+		mail.setMailFrom("admin@sino-mexico-consultants.com");
 		mail.setMailTo(new String[]{"272416634@qq.com"}, "to");
 		mail.addTextContext("测试邮件");
-		mail.addAttachment("f:\\1.docx", "采集.docx");
 		mail.sendMail();
 	}
 }

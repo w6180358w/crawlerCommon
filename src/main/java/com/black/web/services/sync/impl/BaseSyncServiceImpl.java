@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -115,11 +116,15 @@ public abstract class BaseSyncServiceImpl implements SyncService{
 		POIService<BaseEntity> poiService = CommonUtil.getApplicationContext().getBean(POIService.class);
 		InputStream in = poiService.exportExcelInputStream(bean.getData(), dataFields, columns, "yyyy-MM-dd");
 		
-		Mail mail = new Mail(this.getProperty("collect.mail.host"),
-				this.getProperty("collect.mail.port"),
-				this.getProperty("collect.mail.username"),
-				this.getProperty("collect.mail.password"));
-		mail.setMailFrom("xyzhang@qysoft.cn");
+		String username = this.getProperty("mail.username");
+		
+		Mail mail = new Mail(this.getProperty("mail.host"),
+				this.getProperty("mail.port"),
+				username,
+				this.getProperty("mail.password"),
+				BooleanUtils.isTrue(this.getProperty("mail.ssl",Boolean.class)));
+		
+		mail.setMailFrom(username);
 		mail.setMailTo(new String[]{bean.getTarget()}, "to");
 		mail.setSubject("采集数据文档!");
 		mail.addTextContext(sb.toString());

@@ -83,7 +83,7 @@ public class ThreadBean extends Thread{
 		try {
 			this.service.handleData(that);
 		} catch (Exception e) {
-			Logger.error("-------------采集线程["+this.getName()+"]发送邮件失败------------",e);
+			Logger.error("-------------采集线程["+this.getName()+"]采集结束后操作失败------------",e);
 			e.printStackTrace();
 		}
 		endTime = 0l;
