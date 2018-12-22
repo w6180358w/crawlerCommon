@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.black.web.base.bean.BaseModel;
 import com.black.web.base.bean.PageResponse;
-import com.black.web.bean.CollectBean;
-import com.black.web.bean.ThreadBean;
-import com.black.web.bean.ThreadProcessPool;
+import com.black.web.base.collect.CollectBean;
+import com.black.web.base.collect.ThreadBean;
+import com.black.web.base.collect.ThreadProcessPool;
 import com.google.gson.Gson;
 
 @RestController
@@ -26,7 +27,7 @@ public class CollectController{
     	if(bean.getCount()==null && bean.getTime()==null) {
     		bean.setCount(1);
     	}
-    	ThreadBean tbean = new ThreadBean(bean);
+    	ThreadBean<BaseModel> tbean = new ThreadBean<>(bean);
     	ThreadProcessPool.process.put(tbean.getName(), tbean);
     	tbean.start();
         return new Gson().toJson(
@@ -36,7 +37,7 @@ public class CollectController{
     @GetMapping("/process/{id}")
    	@ResponseBody
    	public String process(@PathVariable("id") String id) throws Exception {
-    	ThreadBean bean = ThreadProcessPool.process.get(id);
+    	ThreadBean<BaseModel> bean = ThreadProcessPool.process.get(id);
     	if(bean!=null) {
     		if(bean.getState().compareTo(State.TERMINATED)==0) {
     			return new Gson().toJson(new PageResponse<Object>(true,"","100.00"));

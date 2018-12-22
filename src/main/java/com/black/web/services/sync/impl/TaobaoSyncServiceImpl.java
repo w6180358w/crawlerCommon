@@ -9,9 +9,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 import com.black.web.Logger.Logger;
+import com.black.web.base.service.impl.BaseSyncServiceImpl;
 import com.black.web.bean.BaseEntity;
 
-public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl{
+public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl<BaseEntity>{
 
 	@Override
 	public void doSync(WebDriver driver, List<BaseEntity> data,String key,Integer count) throws Exception {

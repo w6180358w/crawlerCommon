@@ -1,4 +1,4 @@
-package com.black.web.bean;
+package com.black.web.base.collect;
 
 public class CollectBean {
 

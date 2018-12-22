@@ -1,4 +1,4 @@
-package com.black.web.bean;
+package com.black.web.base.collect;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -6,34 +6,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.black.web.Logger.Logger;
+import com.black.web.base.bean.BaseModel;
 import com.black.web.base.bean.PageResponse;
 import com.black.web.base.enums.SyncEnum;
 import com.black.web.base.exception.RaysException;
-import com.black.web.services.sync.SyncService;
+import com.black.web.base.service.SyncService;
 import com.google.gson.Gson;
 
-public class ThreadBean extends Thread{
+public class ThreadBean<T extends BaseModel> extends Thread{
 	
 	private String s;				//搜索关键字
 	private Integer count = 100;	//采集数量
 	private Integer time = 10;		//采集时间(分钟)
 	private Long startTime = 0l;	//采集开始时间
 	private String target;			//采集成功后处理数据的目标（邮箱地址或数据库）
-	private SyncService service;	//service类型
+	private SyncService<T> service;	//service类型
 	private Long endTime = 0l;		//结束时间
 	private Boolean success = true;	//采集结果
 	
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	private List<BaseEntity> data = new ArrayList<>();
+	private List<T> data = new ArrayList<>();
 	
+	@SuppressWarnings("unchecked")
 	public ThreadBean(CollectBean bean) throws RaysException {
 		this.s = bean.getS();
 		this.count = bean.getCount();
 		this.time = bean.getTime();
 		this.target = bean.getTarget();
 		try {
-			this.service = (SyncService) Class.forName(SyncEnum.valueOf(bean.getType().toUpperCase()).getClassName()).newInstance();
+			this.service = (SyncService<T>) Class.forName(SyncEnum.valueOf(bean.getType().toUpperCase()).getClassName()).newInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RaysException("同步类型不存在!");
@@ -42,7 +44,7 @@ public class ThreadBean extends Thread{
 	//采集数据线程
 	@Override
 	public void run() {
-		ThreadBean that = this;
+		ThreadBean<T> that = this;
 		
 		endTime = startTime+time*60*1000;
 		
@@ -132,7 +134,7 @@ public class ThreadBean extends Thread{
 		return time;
 	}
 
-	public List<BaseEntity> getData() {
+	public List<T> getData() {
 		return data;
 	}
 	public Boolean getSuccess() {

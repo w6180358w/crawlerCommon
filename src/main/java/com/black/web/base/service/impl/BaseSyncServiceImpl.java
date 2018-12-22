@@ -1,4 +1,4 @@
-package com.black.web.services.sync.impl;
+package com.black.web.base.service.impl;
 
 import java.io.InputStream;
 import java.util.List;
@@ -11,19 +11,19 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import com.black.web.Logger.Logger;
+import com.black.web.base.bean.BaseModel;
+import com.black.web.base.collect.ThreadBean;
 import com.black.web.base.service.POIService;
+import com.black.web.base.service.SyncService;
 import com.black.web.base.utils.CommonUtil;
 import com.black.web.base.utils.mail.Mail;
-import com.black.web.bean.BaseEntity;
-import com.black.web.bean.ThreadBean;
-import com.black.web.services.sync.SyncService;
 
-public abstract class BaseSyncServiceImpl implements SyncService{
+public abstract class BaseSyncServiceImpl<T extends BaseModel> implements SyncService<T>{
 
 	protected boolean shutdown;
 	
 	@Override
-	public void sync(List<BaseEntity> data,String key,Integer count) throws Exception{
+	public void sync(List<T> data,String key,Integer count) throws Exception{
 		System.setProperty("webdriver.chrome.driver",getProperty("driverPath"));
 		String url = getUrl();
 		WebDriver driver = null;
@@ -56,7 +56,7 @@ public abstract class BaseSyncServiceImpl implements SyncService{
 		}
 	}
 	
-	protected abstract void doSync(WebDriver driver, List<BaseEntity> data,String key,Integer count) throws Exception;
+	protected abstract void doSync(WebDriver driver, List<T> data,String key,Integer count) throws Exception;
 	
 
 	@Override
@@ -70,7 +70,7 @@ public abstract class BaseSyncServiceImpl implements SyncService{
 		return CommonUtil.getApplicationContext().getEnvironment().getProperty("collect."+key);
 	}
 	
-	protected <T>T getProperty(String key,Class<T> clazz) {
+	protected <A>A getProperty(String key,Class<A> clazz) {
 		return CommonUtil.getApplicationContext().getEnvironment().getProperty("collect."+key,clazz);
 	}
 	
@@ -97,7 +97,7 @@ public abstract class BaseSyncServiceImpl implements SyncService{
 	}
 	
 	@Override
-	public void handleData(ThreadBean bean) throws Exception {
+	public void handleData(ThreadBean<T> bean) throws Exception {
 		String now = bean.getNow();
 		StringBuffer sb = new StringBuffer();
 		if(bean.getSuccess()) {
@@ -113,7 +113,7 @@ public abstract class BaseSyncServiceImpl implements SyncService{
 		String[] columns = new String[]{"商品名称","价格","来源","商品详情","商品url","厂家名称"};
 		
 		@SuppressWarnings("unchecked")
-		POIService<BaseEntity> poiService = CommonUtil.getApplicationContext().getBean(POIService.class);
+		POIService<T> poiService = CommonUtil.getApplicationContext().getBean(POIService.class);
 		InputStream in = poiService.exportExcelInputStream(bean.getData(), dataFields, columns, "yyyy-MM-dd");
 		
 		String username = this.getProperty("mail.username");
