@@ -25,8 +25,6 @@ public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl<BaseEntity>{
         //密码
         WebElement password = driver.findElement(By.xpath("//*[@id=\"TPL_password_1\"]"));
         password.sendKeys(this.getProperty("taobao.password"));
-        /*WebElement form = driver.findElement(By.xpath("//*[@id=\"J_Form\"]"));
-        form.click();*/
         
         Thread.sleep(1000);
         
@@ -56,9 +54,9 @@ public class TaobaoSyncServiceImpl extends BaseSyncServiceImpl<BaseEntity>{
             	entity.setSource("taobao");
             	entity.setPrice(price);
             	entity.setSubjectName(subjectName);
+            	entity.setSubjectUrl(sub.getAttribute("href"));
             	entity.setName(title);
             	entity.setUrl(url);
-            	System.out.println("已采集:"+entity.toString());
             	data.add(entity);
         	}
         });

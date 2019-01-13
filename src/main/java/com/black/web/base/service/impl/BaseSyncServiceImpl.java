@@ -109,8 +109,8 @@ public abstract class BaseSyncServiceImpl<T extends BaseModel> implements SyncSe
 			sb.append("采集失败!\n采集开始时间【"+now+"】,任务编码【"+bean.getName()+"】\n请联系管理员查看文档!");
 		}
 		
-		String[] dataFields = new String[]{"name","price","source","detail","url","subjectName"};
-		String[] columns = new String[]{"商品名称","价格","来源","商品详情","商品url","厂家名称"};
+		String[] dataFields = new String[]{"name","price","source","url","subjectName","subjectUrl"};
+		String[] columns = new String[]{"商品名称","价格","来源","商品url","厂家名称","厂家url"};
 		
 		@SuppressWarnings("unchecked")
 		POIService<T> poiService = CommonUtil.getApplicationContext().getBean(POIService.class);
