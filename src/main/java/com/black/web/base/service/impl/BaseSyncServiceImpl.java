@@ -127,7 +127,7 @@ public abstract class BaseSyncServiceImpl<T extends BaseModel> implements SyncSe
 		mail.setMailFrom(username);
 		mail.setMailTo(new String[]{bean.getTarget()}, "to");
 		mail.setSubject("采集数据文档!");
-		mail.addTextContext(sb.toString());
+		mail.addTextContext("采集数据"+(bean.getSuccess()?"成功":"失败")+",请查看附件!");
 		mail.addAttachmentFrombyte(in, "采集["+this.getType()+"-"+bean.getS()+"]数据-"+now+".xlsx");
 		mail.sendMail();
 		Logger.info("-------------采集线程["+bean.getName()+"]发送邮件成功,目标["+bean.getTarget()+"]------------");
